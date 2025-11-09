@@ -1,6 +1,6 @@
 name: PvpParty
 version: '2.25'
-main: com.endxel.pvPPartyRemastered.PvPPartyRemastered
+main: com.endxel.pvPPartyRemastered.PvPPartyRemasteredPluginOld
 api-version: '1.21'
 load: STARTUP
 authors: [ mc_games_YT ]
