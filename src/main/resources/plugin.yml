@@ -1,0 +1,81 @@
+name: PvpParty
+version: '2.25'
+main: com.endxel.pvPPartyRemastered.PvPPartyRemastered
+api-version: '1.21'
+load: STARTUP
+authors: [ mc_games_YT ]
+description: the PvpParty plugin!
+website: https://endxel.com
+softdepend: [Multiverse-Core, PlaceholderAPI, ajLeaderboards]
+
+commands:
+  spectate:
+    description: Spectate the current match
+    usage: /spectate
+    permission: pvpparty.spectate
+  unqueue:
+    description: Leave the match queue
+    usage: /unqueue
+    permission: pvpparty.unqueue
+  requeue:
+    description: Rejoin the match queue
+    usage: /requeue
+    permission: pvpparty.requeue
+  vote:
+    description: Open kit voting menu during voting time
+    usage: /vote
+    permission: pvpparty.vote
+  pvpparty:
+    description: Main PvpParty command
+    usage: /pvpparty <reload|worlds>
+    permission: pvpparty.admin
+    aliases: [pp, pvp]
+  gamestart:
+    description: Force start the PvP match
+    usage: /gamestart
+    permission: pvpparty.admin
+  pvpstats:
+    description: View PvP statistics
+    usage: /pvpstats [player]
+    permission: pvpparty.stats
+    aliases: [stats]
+  savemap:
+    description: Save the current PvP world state (one-time only)
+    usage: /savemap
+    permission: pvpparty.admin
+  createkit:
+    description: Create a new kit
+    usage: /createkit <name> <id> <item_name>
+    permission: pvpparty.admin
+  removekit:
+    description: Remove a kit
+    usage: /removekit <id>
+    permission: pvpparty.admin
+  listkits:
+    description: List all available kits
+    usage: /listkits
+    permission: pvpparty.admin
+  pause:
+    description: Pause/unpause match starting
+    usage: /pause
+    permission: pvpparty.admin
+
+permissions:
+  pvpparty.spectate:
+    description: Allows spectating matches
+    default: true
+  pvpparty.unqueue:
+    description: Allows leaving the queue
+    default: true
+  pvpparty.requeue:
+    description: Allows rejoining the queue
+    default: true
+  pvpparty.vote:
+    description: Allows opening kit voting menu
+    default: true
+  pvpparty.admin:
+    description: Admin permissions for PvpParty
+    default: op
+  pvpparty.stats:
+    description: Allows viewing PvP statistics
+    default: true
