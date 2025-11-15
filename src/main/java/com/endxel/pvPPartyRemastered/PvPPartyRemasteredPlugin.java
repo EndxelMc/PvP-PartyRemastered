@@ -8,7 +8,7 @@ public class PvPPartyRemasteredPlugin extends JavaPlugin {
         getLogger().info("Plugin enabled :D");
 
         // Initialize GameManager with plugin instance
-        GameManager.initialize(this);
+        PluginRegistry.initialize(this);
 
         registerCommands();
     }

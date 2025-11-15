@@ -10,8 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+import static com.endxel.pvPPartyRemastered.LoggerService.*;
+
 public class Game {
-    private final PvPPartyRemasteredPlugin plugin;
+
     private final List<Player> players;
     private final Map<Player, Location> previousLocations;
     private GameState state;
@@ -19,21 +22,18 @@ public class Game {
     private Location lobbyLocation;
     private int countdownTaskId = -1;
 
-    public enum GameState {
-        WAITING,
-        COUNTDOWN,
-        ACTIVE,
-        ENDING
-    }
+    private int countdownSecondsLeft = -1; // -1: symvoliko (den exei ksekinhsei countdown)
 
-    public Game(PvPPartyRemasteredPlugin plugin) {
-        this.plugin = plugin;
+    public Game() {
         this.players = new ArrayList<>();
         this.previousLocations = new HashMap<>();
         this.state = GameState.WAITING;
     }
 
     public void addPlayer(Player player) {
+        if (this.state != GameState.WAITING ) {
+            warn("Game not in WAITING state!");
+        }
         players.add(player);
     }
 
@@ -63,17 +63,17 @@ public class Game {
 
     public void start() {
         if (state != GameState.WAITING) {
-            plugin.getLogger().warning("Cannot start game - game is not in WAITING state!");
+            warn("Cannot start game - game is not in WAITING state!");
             return;
         }
 
         if (players.isEmpty()) {
-            plugin.getLogger().warning("Cannot start game - no players!");
+            warn("Cannot start game - no players!");
             return;
         }
 
         if (gameLocation == null) {
-            plugin.getLogger().warning("Cannot start game - game location not set!");
+            warn("Cannot start game - game location not set!");
             return;
         }
 
@@ -95,12 +95,13 @@ public class Game {
     }
 
     private void startCountdown(int seconds) {
+        this.countdownSecondsLeft = seconds;
         new BukkitRunnable() {
-            int timeLeft = seconds;
+
 
             @Override
             public void run() {
-                if (timeLeft <= 0) {
+                if (countdownSecondsLeft <= 0) {
                     // Countdown finished, end the game
                     cancel();
                     endGame();
@@ -109,21 +110,21 @@ public class Game {
 
                 // Broadcast countdown to all players
                 for (Player player : players) {
-                    player.sendMessage("§e§lGame ends in: §c" + timeLeft + "s");
-                    player.sendTitle("§c" + timeLeft, "§7Game ending soon...", 0, 20, 10);
+                    player.sendMessage("§e§lGame ends in: §c" + countdownSecondsLeft + "s");
+                    player.sendTitle("§c" + countdownSecondsLeft, "§7Game ending soon...", 0, 20, 10);
                 }
 
-                timeLeft--;
+                countdownSecondsLeft--;
             }
-        }.runTaskTimer(plugin, 0L, 20L); // Run every second (20 ticks)
+        }.runTaskTimer(PluginRegistry.getPlugin(), 0L, 20L); // Run every second (20 ticks)
     }
 
     public void endGame() {
-        if (state == GameState.ENDING) {
+        if (state == GameState.FINISHED) {
             return;
         }
 
-        state = GameState.ENDING;
+        state = GameState.FINISHED;
 
         // Teleport all players back to lobby
         for (Player player : players) {

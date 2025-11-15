@@ -13,13 +13,19 @@ public class CommandService {
         // "/gamestart" -> Start the game
         PluginCommand gamestartCommand = plugin.getCommand("gamestart");
         if (gamestartCommand != null) {
-            gamestartCommand.setExecutor(new CommandExecutor() {
-                @Override
-                public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] strings) {
-                    GameManager.startGame();
-                    commandSender.sendMessage("§aGame start initiated!");
-                    return true;
-                }
+//            gamestartCommand.setExecutor(new CommandExecutor() {
+//                @Override
+//                public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] strings) {
+//                    GameManager.startGame();
+//                    commandSender.sendMessage("§aGame start initiated!");
+//                    return true;
+//                }
+//            });
+
+            gamestartCommand.setExecutor((@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] strings) -> {
+                GameManager.startGame();
+                commandSender.sendMessage("§aGame start initiated!");
+                return true;
             });
         }
 

@@ -7,23 +7,29 @@ import org.bukkit.entity.Player;
 import java.util.Collection;
 
 public class GameManager {
-    private static PvPPartyRemasteredPlugin plugin;
-    private static Game activeGame = null;
+    private static Game activeGame;
     private static Location defaultGameLocation = null;
     private static Location defaultLobbyLocation = null;
 
-    public static void initialize(PvPPartyRemasteredPlugin pluginInstance) {
-        plugin = pluginInstance;
-    }
-
-    public static void startGame() {
-        if (activeGame != null && activeGame.getState() != Game.GameState.ENDING) {
-            plugin.getLogger().warning("A game is already active!");
+    public static void createGame(){
+        if(activeGame != null){
+            LoggerService.warn("cant create game, active game exists!");
             return;
         }
 
-        // Create new game
-        activeGame = new Game(plugin);
+        activeGame = new Game();
+    }
+
+    public static void addPlayerToGame(Game g, Player p){
+        g.addPlayer(p);
+    }
+
+    public static void startGame() {
+        // TODO: fix logic
+        if (activeGame != null && activeGame.getState() != GameState.FINISHED) {
+            LoggerService.warn("A game is already active!");
+            return;
+        }
 
         // Add all online players to the game
         Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
@@ -33,7 +39,7 @@ public class GameManager {
         }
 
         if (onlinePlayers.isEmpty()) {
-            plugin.getLogger().warning("No players online to start the game!");
+            LoggerService.warn("No players online to start the game!");
             activeGame = null;
             return;
         }
@@ -52,12 +58,12 @@ public class GameManager {
 
         // Start the game
         activeGame.start();
-        plugin.getLogger().info("Game started with " + onlinePlayers.size() + " players!");
+        LoggerService.info("Game started with " + onlinePlayers.size() + " players!");
     }
 
     public static void endGame() {
         if (activeGame == null) {
-            plugin.getLogger().warning("No active game to end!");
+            LoggerService.warn("No active game to end!");
             return;
         }
 
@@ -67,7 +73,7 @@ public class GameManager {
     public static void onGameEnd(Game game) {
         if (activeGame == game) {
             activeGame = null;
-            plugin.getLogger().info("Game ended and cleared.");
+            LoggerService.info("Game ended and cleared.");
         }
     }
 
