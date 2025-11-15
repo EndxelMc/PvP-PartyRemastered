@@ -1,6 +1,6 @@
 name: PvpParty
 version: '2.25'
-main: com.endxel.pvPPartyRemastered.PvPPartyRemasteredPluginOld
+main: com.endxel.pvPPartyRemastered.PvPPartyRemasteredPlugin
 api-version: '1.21'
 load: STARTUP
 authors: [ mc_games_YT ]
@@ -33,6 +33,18 @@ commands:
   gamestart:
     description: Force start the PvP match
     usage: /gamestart
+    permission: pvpparty.admin
+  gameend:
+    description: Force end the current game
+    usage: /gameend
+    permission: pvpparty.admin
+  setgamelocation:
+    description: Set the game spawn location
+    usage: /setgamelocation
+    permission: pvpparty.admin
+  setlobbylocation:
+    description: Set the lobby return location
+    usage: /setlobbylocation
     permission: pvpparty.admin
   pvpstats:
     description: View PvP statistics
